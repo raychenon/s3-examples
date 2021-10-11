@@ -15,7 +15,7 @@ import java.io.IOException;
 public class S3GetObject {
 
     public void read(String bucket_name, String key_name){
-        final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.DEFAULT_REGION).build();
+        final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_1).build();
         try {
             S3Object o = s3.getObject(bucket_name, key_name);
             S3ObjectInputStream s3is = o.getObjectContent();

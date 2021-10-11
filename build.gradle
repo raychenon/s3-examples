@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+}
+
+group 'com.raychenon.s3'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+ext.amazonaws_version = "1.12.84"
+
+dependencies {
+
+    implementation "com.amazonaws:aws-java-sdk-s3:$amazonaws_version"
+    implementation "com.amazonaws:aws-java-sdk-sts:$amazonaws_version"
+//    implementation "com.amazonaws:aws-java-sdk-iam:$amazonaws_version"
+//    implementation "com.amazonaws:aws-java-sdk-kms:$amazonaws_version"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+//create a single Jar with all dependencies
+// https://stackoverflow.com/a/61869722/311420
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': version,
+                'Main-Class': 'com.raychenon.s3.Application'
+    }
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
